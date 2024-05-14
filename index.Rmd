@@ -16,6 +16,7 @@ library(sp)
 library(raster)
 library(mapview)
 library(leafsync)
+library(glue)
 
 #author: Wanda Bodnar
 
@@ -209,7 +210,7 @@ dygraph(sealevel, main = "") %>%
 United Kingdom & London
 =====================================
 
-Column {data-width=500}
+Column {data-width=550}
 -------------------------------------
 ### UK annual mean air temperature
 ```{r}
@@ -297,3 +298,320 @@ dygraph(wind_combined, main = "") %>%
   dyLegend(show = "always", hideOnMouseOut = T) %>%
   dyRangeSelector() 
 ```
+
+
+# Temperature projections - Thames Estuary area
+
+Column {data-width=550}
+-------------------------------------
+
+### Path: if global average temperature reaches 2°C by 2100
+
+```{r}
+## 2
+setwd("C:/Users/bodna/Documents/Work/Roadmap to Climate Resilience/Working folder/Data/UK-CRI/Temperature/2")
+temp2 <- sf::read_sf("2.geojson") 
+
+bins2 <- c(0.8, 1, 1.2, 1.4)
+pal2 <- colorBin(palette = c("#ffc700", "#f9b700", "#f3a700", "#ec9700"), domain = c(min(temp2$y2036), max(temp2$y2076)), bins = bins2)
+
+
+label30_2 <- glue(
+  "<b>Borough: </b> {temp2$location}<br/>",
+  "<b>Average temp: </b> {temp2$y2036}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label40_2 <- glue(
+  "<b>Borough: </b> {temp2$location}<br/>",
+  "<b>Average temp: </b> {temp2$y2046}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label50_2 <- glue(
+  "<b>Borough: </b> {temp2$location}<br/>",
+  "<b>Average temp: </b> {temp2$y2056}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label60_2 <- glue(
+  "<b>Borough: </b> {temp2$location}<br/>",
+  "<b>Average temp: </b> {temp2$y2066}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label70_2 <- glue(
+  "<b>Borough: </b> {temp2$location}<br/>",
+  "<b>Average temp: </b> {temp2$y2076}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label80_2 <- glue(
+  "<b>Borough: </b> {temp2$location}<br/>",
+  "<b>Average temp: </b> {temp2$y2086}<br/>") %>%
+  lapply(htmltools::HTML)
+
+leaflet(temp2) %>%
+  addTiles() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>% 
+  addPolygons(label = label30_2, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal2(y2036), group = "2030s") %>%
+  addPolygons(label = label40_2, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal2(y2046), group = "2040s") %>%
+  addPolygons(label = label50_2, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal2(y2056), group = "2050s") %>%
+  addPolygons(label = label60_2, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal2(y2066), group = "2060s") %>%
+  addPolygons(label = label70_2, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal2(y2076), group = "2070s") %>%
+  addPolygons(label = label80_2, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal2(y2086), group = "2080s") %>%
+  leaflet::addLegend(pal = pal2, values = c(min(temp2$y2036), max(temp2$y2086)), 
+            opacity = 0.7, title = "Median change", position = "bottomleft", labFormat = labelFormat(suffix = "°C")) %>% 
+  addLayersControl(
+    overlayGroups = c("2030s", "2040s", "2050s", "2060s", "2070s", "2080s"),
+    options = layersControlOptions(collapsed = F)) %>%
+   hideGroup(c("2040s", "2050s", "2060s", "2070s", "2080s"))
+```
+
+
+### Path: if global average temperature reaches 3°C by 2100
+
+```{r}
+## 3
+setwd("C:/Users/bodna/Documents/Work/Roadmap to Climate Resilience/Working folder/Data/UK-CRI/Temperature/3")
+temp3 <- sf::read_sf("3.geojson") 
+
+bins3 <- c(1, 1.2, 1.4, 1.6, 1.8, 2, 2.2)
+pal3 <- colorBin(palette = c("#f9b700", "#f3a700", "#ec9700", "#e58700", "#dd7800",
+                             "#d56800", "#d56800"), domain = c(min(temp3$y2036), max(temp3$y2086)), bins = bins3)
+
+
+label30_3 <- glue(
+  "<b>Borough: </b> {temp3$location}<br/>",
+  "<b>Average temp: </b> {temp3$y2036}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label40_3 <- glue(
+  "<b>Borough: </b> {temp3$location}<br/>",
+  "<b>Average temp: </b> {temp3$y2046}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label50_3 <- glue(
+  "<b>Borough: </b> {temp3$location}<br/>",
+  "<b>Average temp: </b> {temp3$y2056}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label60_3 <- glue(
+  "<b>Borough: </b> {temp3$location}<br/>",
+  "<b>Average temp: </b> {temp3$y2066}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label70_3 <- glue(
+  "<b>Borough: </b> {temp3$location}<br/>",
+  "<b>Average temp: </b> {temp3$y2076}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label80_3 <- glue(
+  "<b>Borough: </b> {temp3$location}<br/>",
+  "<b>Average temp: </b> {temp3$y2086}<br/>") %>%
+  lapply(htmltools::HTML)
+
+leaflet(temp3) %>%
+  addTiles() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>% 
+  addPolygons(label = label30_3, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal3(y2036), group = "2030s") %>%
+  addPolygons(label = label40_3, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal3(y2046), group = "2040s") %>%
+  addPolygons(label = label50_3, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal3(y2056), group = "2050s") %>%
+  addPolygons(label = label60_3, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal3(y2066), group = "2060s") %>%
+  addPolygons(label = label70_3, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal3(y2076), group = "2070s") %>%
+  addPolygons(label = label80_3, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal3(y2086), group = "2080s") %>%
+  leaflet::addLegend(pal = pal3, values = c(min(temp3$y2036), max(temp3$y2086)), 
+            opacity = 0.7, title = "Median change", position = "bottomleft", labFormat = labelFormat(suffix = "°C")) %>% 
+  addLayersControl(
+    overlayGroups = c("2030s", "2040s", "2050s", "2060s", "2070s", "2080s"),
+    options = layersControlOptions(collapsed = F)) %>%
+  hideGroup(c("2040s", "2050s", "2060s", "2070s", "2080s"))
+```
+
+### Path: if global average temperature reaches 4°C by 2100
+
+```{r}
+## 4
+setwd("C:/Users/bodna/Documents/Work/Roadmap to Climate Resilience/Working folder/Data/UK-CRI/Temperature/4")
+
+temp4 <- sf::read_sf("4.geojson") 
+
+bins4 <- c(1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.4, 2.6, 2.8, 3)
+pal4 <- colorBin(palette = c("#f9b700", "#f3a700", "#ec9700", "#e58700", "#dd7800",
+                             "#d56800", "#d56800", "#cc5800", "#c24700", "#b83600", "#ae2200"), 
+                 domain = c(min(temp4$y2036), max(temp4$y2086)), bins = bins4)
+
+
+label30_4 <- glue(
+  "<b>Borough: </b> {temp4$location}<br/>",
+  "<b>Average temp: </b> {temp4$y2036}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label40_4 <- glue(
+  "<b>Borough: </b> {temp4$location}<br/>",
+  "<b>Average temp: </b> {temp4$y2046}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label50_4 <- glue(
+  "<b>Borough: </b> {temp4$location}<br/>",
+  "<b>Average temp: </b> {temp4$y2056}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label60_4 <- glue(
+  "<b>Borough: </b> {temp4$location}<br/>",
+  "<b>Average temp: </b> {temp4$y2066}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label70_4 <- glue(
+  "<b>Borough: </b> {temp4$location}<br/>",
+  "<b>Average temp: </b> {temp4$y2076}<br/>") %>%
+  lapply(htmltools::HTML)
+
+label80_4 <- glue(
+  "<b>Borough: </b> {temp4$location}<br/>",
+  "<b>Average temp: </b> {temp4$y2086}<br/>") %>%
+  lapply(htmltools::HTML)
+
+leaflet(temp4) %>%
+  addTiles() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>% 
+  addPolygons(label = label30_4, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal4(y2036), group = "2030s") %>%
+  addPolygons(label = label40_4, 
+             weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal4(y2046), group = "2040s") %>%
+  addPolygons(label = label50_4, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal4(y2056), group = "2050s") %>%
+  addPolygons(label = label60_4, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal4(y2066), group = "2060s") %>%
+  addPolygons(label = label70_4, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal4(y2076), group = "2070s") %>%
+  addPolygons(label = label80_4, 
+              weight = 1,
+              opacity = 1,
+              color = "white",
+              dashArray = "1",
+              fillOpacity = 0.7,
+              fillColor = ~pal4(y2086), group = "2080s") %>%
+  leaflet::addLegend(pal = pal4, values = c(min(temp4$y2036), max(temp4$y2086)), 
+            opacity = 0.7, title = "Median change", position = "bottomleft", labFormat = labelFormat(suffix = "°C")) %>% 
+  addLayersControl(
+    overlayGroups = c("2030s", "2040s", "2050s", "2060s", "2070s", "2080s"),
+    options = layersControlOptions(collapsed = F)) %>%
+  hideGroup(c("2040s", "2050s", "2060s", "2070s", "2080s"))
+```
+
+
+Row 
+-------------------------------------
+
+### Median temperature change averaged across the riparian boroughs
+
+```{r}
+setwd("C:/Users/bodna/Documents/Work/Roadmap to Climate Resilience/Working folder/Data/UK-CRI/Temperature")
+
+ave <- read.csv("average.csv")
+
+ave$year <- as.numeric(ave$year)
+
+dygraph(ave, main = "") %>%
+  dyAxis("y", label = "Temperature change") %>%
+  dySeries("X2_value", label = "2°C", color = "green") %>%
+  dySeries("X3_value", label = "3°C", color = "orange") %>%
+  dySeries("X4_value", label = "4°C", color = "red") %>%
+  dyRangeSelector() 
+```
+
+# Rainfall projections - Thames Estuary area
+
