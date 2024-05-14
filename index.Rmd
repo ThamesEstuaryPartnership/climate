@@ -26,15 +26,12 @@ library(leafsync)
 ##https://www.kaggle.com/datasets/noahx1/london-weather-2000-2023,
 #https://psmsl.org/data/, 
 #https://www.sciencedirect.com/science/article/pii/S0079661121000112?via%3Dihub#s0180, 
-#https://climatedataportal.metoffice.gov.uk/datasets/TheMetOffice::annual-average-temperature-change-projections-12km/about,
-#https://climatedataportal.metoffice.gov.uk/datasets/TheMetOffice::annual-precipitation-projections-2050-2079/about,
-#https://climatedataportal.metoffice.gov.uk/datasets/TheMetOffice::drought-severity-index-12-month-accumulations-projections/about
 ```
 
 Global
 =====================================
 
-Column {data-width=500}
+Column {data-width=550}
 -------------------------------------
 ### Carbon-dioxide concentration
 
@@ -209,7 +206,7 @@ dygraph(sealevel, main = "") %>%
 ``` 
 
 
-United Kingdom
+United Kingdom & London
 =====================================
 
 Column {data-width=500}
@@ -217,7 +214,7 @@ Column {data-width=500}
 ### UK annual mean air temperature
 ```{r}
 
-setwd("C:/Users/bodna/OneDrive - University College London/Roadmap to Climate Resilience/Working folder/Data")
+setwd("C:/Users/bodna/Documents/Work/Roadmap to Climate Resilience/Working folder/Data")
 
 uk <- read.csv("uk_temp.csv")
 
@@ -232,7 +229,7 @@ dygraph(uk, main = "") %>%
 ### Great Britain sea level from tide gauges
 ```{r}
 
-setwd("C:/Users/bodna/OneDrive - University College London/Roadmap to Climate Resilience/Working folder/Data/sea level")
+setwd("C:/Users/bodna/Documents/Work/Roadmap to Climate Resilience/Working folder/Data/sea level")
 
 sea <- read.csv("uk2.csv")
 
@@ -249,7 +246,7 @@ Row {data-height=500}
 
 ### London annual maximum and minimum air temperature
 ```{r}
-setwd("C:/Users/bodna/OneDrive - University College London/Roadmap to Climate Resilience/Working folder/Data")
+setwd("C:/Users/bodna/Documents/Work/Roadmap to Climate Resilience/Working folder/Data")
 
 london <- read.csv("london.csv")
 
@@ -267,7 +264,7 @@ dygraph(london_monthly_combined, main = "") %>%
 
 ### London annual mean precipitation
 ```{r}
-setwd("C:/Users/bodna/OneDrive - University College London/Roadmap to Climate Resilience/Working folder/Data")
+setwd("C:/Users/bodna/Documents/Work/Roadmap to Climate Resilience/Working folder/Data")
 
 london <- read.csv("london.csv")
 
@@ -285,7 +282,7 @@ dygraph(london_monthly_combined, main = "") %>%
 
 ### London annual mean wind speed
 ```{r}
-setwd("C:/Users/bodna/OneDrive - University College London/Roadmap to Climate Resilience/Working folder/Data")
+setwd("C:/Users/bodna/Documents/Work/Roadmap to Climate Resilience/Working folder/Data")
 
 wind <- read.csv("wind.csv")
 
@@ -299,121 +296,4 @@ dygraph(wind_combined, main = "") %>%
   dyOptions(fillGraph = TRUE, fillAlpha = 0.1) %>%
   dyLegend(show = "always", hideOnMouseOut = T) %>%
   dyRangeSelector() 
-```
-
-
-Climate projections - United Kingdom
-=====================================
-
-Column {data-width=250}
--------------------------------------
-
-### Annual Average Temperature Change
-```{r}
-uk_temp <- sf::read_sf("https://services.arcgis.com/Lq3V5RFuTBC9I7kv/arcgis/rest/services/Annual_Average_Temperature_Change___Projections_12km_grid/FeatureServer/334/query?outFields=*&where=1%3D1&f=geojson") 
-
-pal <- colorNumeric("YlOrRd", NULL)
-
-leaflet(uk_temp) %>%
-  addTiles() %>%
-  addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 0.8,
-              fillColor = ~pal(tas_annual_change_40_median), group = "4°C") %>%
-  addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 0.8,
-              fillColor = ~pal(tas_annual_change_30_median), group = "3°C") %>%
-  addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 0.8,
-              fillColor = ~pal(tas_annual_change_15_median), group = "1.5°C") %>%
-  addLayersControl(
-    overlayGroups = c("1.5°C", "3°C", "4°C"),
-    options = layersControlOptions(collapsed = F)) %>%
-  hideGroup(c("3°C", "4°C")) %>%
-  addLegend("bottomright", 
-            colors = c("#ffffb2", "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026"),
-            labels = c("2.6", "", "", "", "3.6"),
-            title = "4°C",
-            opacity = 0.7) %>%
-  addLegend("bottomright", 
-            colors = c("#ffffb2", "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026"),
-            labels = c("1.9", "", "", "", "2.7"),
-            title = "3°C",
-            opacity = 0.7) %>%
-  addLegend("bottomright", 
-            colors = c("#ffffb2", "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026"),
-            labels = c("0.8", "", "", "", "1.2"),
-            title = "1.5°C",
-            opacity = 0.7)
-```
-
-Column {data-width=250}
--------------------------------------
-
-### Annual Average Precipitation (2050-2079)
-```{r}
-uk_perc <- sf::read_sf("https://services.arcgis.com/Lq3V5RFuTBC9I7kv/arcgis/rest/services/Rainfall_average_annual_2050_79_rcp85/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson") 
-
-pal <- colorNumeric("Spectral", NULL)
-
-leaflet(uk_perc) %>%
-  addTiles() %>%
-  addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 0.8,
-              fillColor = ~pal(prMedian), group = "data") %>%
-    addLegend("bottomright", 
-            colors = c("#d7191c", "#fdae61", "#ffffbf", "#abdda4", "#2b83ba"),
-            labels = c("1", "", "", "", "10"),
-            title = "mm/day",
-            opacity = 0.7)
-```
-
-Column {data-width=250}
--------------------------------------
-
-### Drought Severity Index (12-Month Accumulations)
-```{r}
-uk_drought <- sf::read_sf("https://services.arcgis.com/Lq3V5RFuTBC9I7kv/arcgis/rest/services/Drought_Severity_Index_12_Month_Accumulations/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson") 
-
-pal <- colorNumeric("RdYlGn", NULL)
-
-leaflet(uk_drought) %>%
-  addTiles() %>%
-  addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 0.9,
-              fillColor = ~pal(-DSI12_40_median), group = "4°C") %>%
-  addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 0.8,
-              fillColor = ~pal(-DSI12_30_median), group = "3°C") %>%
-  addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 0.7,
-              fillColor = ~pal(-DSI12_15_median), group = "1.5°C") %>%
-  addLayersControl(
-    overlayGroups = c("1.5°C", "3°C", "4°C"),
-    options = layersControlOptions(collapsed = F)) %>%
-  hideGroup(c("3°C", "4°C")) %>%
-  addLegend("bottomright", 
-            colors = c("#1a9641", "#a6d96a", "#ffffbf", "#fdae61", "#d7191c"),
-            labels = c("6", "", "", "", "35"),
-            title = "4°C",
-            opacity = 0.7) %>%
-  addLegend("bottomright", 
-            colors = c("#1a9641", "#a6d96a", "#ffffbf", "#fdae61", "#d7191c"),
-            labels = c("5", "", "", "", "20"),
-            title = "3°C",
-            opacity = 0.7) %>%
-  addLegend("bottomright", 
-            colors = c("#1a9641", "#a6d96a", "#ffffbf", "#fdae61", "#d7191c"),
-            labels = c("4", "", "", "", "12"),
-            title = "1.5°C",
-            opacity = 0.7)
-```
-
-Column {data-width=300}
--------------------------------------
-
-### Time-mean sea-level projection at Southend-on-Sea
-```{r}
-setwd("C:/Users/bodna/OneDrive - University College London/Roadmap to Climate Resilience/Working folder/Data/sea level")
-
-sealevel_pro2 <- read.csv("southend.csv")
-
-dygraph(sealevel_pro2, main = "") %>% 
-  dySeries("SSP1.2.6", label = "RCP 2.6", color = "blue") %>%
-  dySeries("SSP2.4.5", label = "RCP 4.5", color = "orange") %>%
-  dySeries("SSP5.8.5", label = "RCP 8.5", color = "red") %>%
-  dyAxis("y", label = "Sea level (cm)") %>%
-  dyLegend(show = "always", hideOnMouseOut = T)
 ```
