@@ -27,6 +27,7 @@ library(glue)
 ##https://www.kaggle.com/datasets/noahx1/london-weather-2000-2023,
 #https://psmsl.org/data/, 
 #https://www.sciencedirect.com/science/article/pii/S0079661121000112?via%3Dihub#s0180, 
+#https://uk-cri.org/
 ```
 
 Global
@@ -34,7 +35,7 @@ Global
 
 Column {data-width=550}
 -------------------------------------
-### Carbon-dioxide concentration
+### Atmospheric carbon-dioxide concentration
 
 ```{r}
 mauna <- read.csv(url("https://climate.metoffice.cloud/formatted_data/co2_Mauna%20Loa%20CO2.csv"))
@@ -70,7 +71,7 @@ dygraph(carbon, main = "") %>%
   dyRangeSelector() 
 ```
 
-### Global mean temperature difference from 1850-1900
+### Mean temperature difference from 1850-1900
 
 ```{r}
 HadCRUT5 <- read.csv(url("https://climate.metoffice.cloud/formatted_data/gmt_HadCRUT5.csv"))
@@ -102,7 +103,7 @@ dygraph(temp, main = "") %>%
 Row {data-height=500}
 -------------------------------------
 
-### Global ocean heat content difference from 1981-2010
+### Ocean heat content difference from 1981-2010
 
 ```{r}
 EN.4.2.2.c14 <- read.csv(url("https://climate.metoffice.cloud/formatted_data/ohc_EN.4.2.2.c14.csv"))
@@ -161,7 +162,7 @@ dygraph(oceanheat, main = "") %>%
   dyRangeSelector() 
 ```
 
-### Global sea level difference from 1981-2010
+### Sea level difference from 1981-2010
 
 ```{r}
 palmer <- read.csv(url("https://climate.metoffice.cloud/formatted_data/sea_level_lt_Palmer%20et%20al.%202021.csv"))
@@ -615,3 +616,46 @@ dygraph(ave, main = "") %>%
 
 # Rainfall projections - Thames Estuary area
 
+Column {data-width=550}
+-------------------------------------
+
+### Path: if global average temperature reaches 2°C by 2100
+
+```{r}
+
+```
+
+
+### Path: if global average temperature reaches 4°C by 2100
+
+```{r}
+
+```
+
+### Path: if global average temperature reaches 4°C by 2100
+
+```{r}
+
+```
+
+
+Row 
+-------------------------------------
+
+### Median rainfall change averaged across the riparian boroughs
+
+```{r}
+setwd("C:/Users/bodna/Documents/Work/Roadmap to Climate Resilience/Working folder/Data/UK-CRI/Rainfall")
+
+rain_ave <- read.csv("rain_ave.csv")
+
+rain_ave$year <- as.numeric(rain_ave$year)
+
+dygraph(rain_ave, main = "") %>%
+  dyAxis("y", label = "Rainfall change (%)") %>%
+  dySeries("X2_value", label = "2°C", color = "lightblue") %>%
+  dyRangeSelector()
+```
+
+
+# Flood and sea level projections - Thames Estuary area
